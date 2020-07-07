@@ -38,19 +38,25 @@ app.get("/api/notes",(req, res) => {
 })
 
 //this is going to be the part that deletes the data from the webpage in the browser
+// first get id from request
 app.delete("/api/notes/:id", (req, res) => {
    let id = req.params.id;
-   // the fs.readFile looks through db.json and iterates over the array to find the id requested by user and then deletes the note that is requested
+   // reading the db.json file and iterating over each part with a for loop. 
    fs.readFile("./db/db.json",function(err, data){
       let notes = JSON.parse(data);
+      // finding the note that is being requested to be deleted.
       let newNotes = []
+      let note;
       for (let i = 0; i < notes.length; i++) {
          if (notes[i].id == id) {
+            note = notes[i];
          } else {
             newNotes.push(notes[i])
          }
       }
-      fs.writeFile("./db/db.json", JSON.stringify(newNotes), err => { 
+      // this writes the new note after the requested note has been deleted.
+      fs.writeFile("./db/db.json", JSON.stringify(newNotes), err => {
+         res.json(note);
       });
    })
   })  
