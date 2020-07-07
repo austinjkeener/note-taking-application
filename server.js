@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
  app.use(express.json());
 
  // view route handling -- which works with the html document
-app.get("/", (req,res) => {
+ app.get("/", (req,res) => {
  res.send("Hello world!");
 });
  // api route handling -- which works with json to get data usually in the form of objects
