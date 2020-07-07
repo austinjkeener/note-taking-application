@@ -2,6 +2,9 @@
  * Note taking application server files
  */
 
+// requiring fs
+const fs = require('fs');
+
  // 1. require express in the document
 const express = require("express");
 //  1.1 require path so that i can link documents to each other
@@ -25,6 +28,30 @@ app.get("/notes", (req,res) => {
    //  res.send("Hello world!");
       res.sendFile(path.join(__dirname + "/public/notes.html"));
    });
+
+app.post("/api/notes", (req,res) => {
+   // targeting title and text variables
+   let title = req.body.title;
+   let text = req.body.text;
+   console.log(title);
+   console.log(text);
+   // making json object
+   let note = {
+      "title":title,
+      "text":text
+   }
+   // appends to the db.json object 
+   let notes;
+   fs.readFile("/db/db.json", function(err, data){
+         notes = JSON.parse(data);
+         
+   });
+      
+   notes.push(note);
+   fs.writeFile("/db/db.json", JSON.stringify(notes), err => { 
+       console.log("Done writing"); // Success 
+   });
+})
  // api route handling -- which works with json to get data usually in the form of objects
 
  // 4. listen on the PORT
