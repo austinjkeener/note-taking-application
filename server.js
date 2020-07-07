@@ -20,6 +20,10 @@ const PORT = process.env.PORT || 3000;
 //  res.send("Hello world!");
    res.sendFile(path.join(__dirname + "/public/index.html"));
 });
+app.get("/notes", (req,res) => {
+   //  res.send("Hello world!");
+      res.sendFile(path.join(__dirname + "/public/notes.html"));
+   });
  // api route handling -- which works with json to get data usually in the form of objects
 
  // 4. listen on the PORT
