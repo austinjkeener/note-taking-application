@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3000;
  // view route handling -- which works with the html document
  app.get("/", (req,res) => {
 //  res.send("Hello world!");
-   res.sendfile(__dirname + "/public/index.html")
+   res.sendFile(path.join(__dirname + "/public/index.html"));
 });
  // api route handling -- which works with json to get data usually in the form of objects
 
