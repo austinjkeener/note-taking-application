@@ -20,9 +20,9 @@ const PORT = process.env.PORT || 3000;
  app.use(express.json());
  app.use(express.static(__dirname + '/public'));
 
- // create get request to get something from server
- // view route handling -- which works with the html document
- app.get("/", (req,res) => {
+// create get request to get something from server
+// view route handling -- which works with the html document
+app.get("/", (req,res) => {
 //  res.send("Hello world!");
    res.sendFile(path.join(__dirname + "/public/index.html"));
 });
@@ -36,6 +36,25 @@ app.get("/api/notes",(req, res) => {
       res.json(notes);
    })
 })
+
+//this is going to be the part that deletes the data from the webpage in the browser
+app.delete("/api/notes/:id", (req, res) => {
+   let id = req.params.id;
+   // the fs.readFile looks through db.json and iterates over the array to find the id requested by user and then deletes the note that is requested
+   fs.readFile("./db/db.json",function(err, data){
+      let notes = JSON.parse(data);
+      let newNotes = []
+      for (let i = 0; i < notes.length; i++) {
+         if (notes[i].id == id) {
+         } else {
+            newNotes.push(notes[i])
+         }
+      }
+      fs.writeFile("./db/db.json", JSON.stringify(newNotes), err => { 
+      });
+   })
+  })  
+
 // creating a new post request to save to server
 app.post("/api/notes", (req,res) => {
    // giving every post a unique id
@@ -55,7 +74,7 @@ app.post("/api/notes", (req,res) => {
    // this reads what is in the db.json file
    fs.readFile("./db/db.json", function(err, data){
          notes = JSON.parse(data);
-         id = notes.length;
+         id = (new Date()).getTime();
          note.id=id;
          // notes.push is pushing the inforamtion entered in into the db.json array
          notes.push(note);
@@ -64,15 +83,6 @@ app.post("/api/notes", (req,res) => {
          res.json(note);
       });
    });
-   //this is going to be the part that deletes the data from the webpage in the browser
-  app.delete("/api/notes/:id", (req, res) => {
-   let id = req.params.id;
-   // this get the 
-   fs.readFile("./db/db.json",function(err, data){
-      let notes = JSON.parse(data);
-      notes.splice(id,1);
-   })
-  })  
 })
 
  // api route handling -- which works with json to get data usually in the form of objects
